@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: truck
+  namespace: confluent
+spec:
+  serviceName: 'truck-app'
+  replicas: 3
+  selector:
+    matchLabels:
+      app: truck-app
+  template:
+    metadata:
+      labels:
+        app: truck-app
+    spec:
+      containers:
+        - name: truck-app-container
+          image: truck_producer:latest
+          imagePullPolicy: Never
+          env:
+            - name: TRUCK_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: BOOTSTRAP_SERVERS
+              value: 'kafka:9071'

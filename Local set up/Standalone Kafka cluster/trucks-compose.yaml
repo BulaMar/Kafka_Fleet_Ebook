@@ -1,0 +1,53 @@
+services:
+  truck_1:
+    restart: no
+    image: truck_producer
+    environment:
+      - TRUCK_ID=0
+      - BOOTSTRAP_SERVERS=kafka-0:9092,kafka-1:9092,kafka-2:9092
+    networks:
+      - kafka_cluster
+  truck_2:
+    restart: no
+    image: truck_producer
+    environment:
+      - TRUCK_ID=1
+      - BOOTSTRAP_SERVERS=kafka-0:9092,kafka-1:9092,kafka-2:9092
+    networks:
+      - kafka_cluster
+  truck_3:
+    restart: no
+    image: truck_producer
+    environment:
+      - TRUCK_ID=2
+      - BOOTSTRAP_SERVERS=kafka-0:9092,kafka-1:9092,kafka-2:9092
+    networks:
+      - kafka_cluster
+  truck_4:
+    restart: no
+    image: truck_producer
+    environment:
+      - TRUCK_ID=3
+      - BOOTSTRAP_SERVERS=kafka-0:9092,kafka-1:9092,kafka-2:9092
+    networks:
+      - kafka_cluster
+  truck_5:
+    restart: no
+    image: truck_producer
+    environment:
+      - TRUCK_ID=4
+      - BOOTSTRAP_SERVERS=kafka-0:9092,kafka-1:9092,kafka-2:9092
+    networks:
+      - kafka_cluster
+  truck_6:
+    restart: no
+    image: truck_producer
+    environment:
+      - TRUCK_ID=5
+      - BOOTSTRAP_SERVERS=kafka-0:9092,kafka-1:9092,kafka-2:9092
+    networks:
+      - kafka_cluster
+networks:
+  kafka_cluster:
+    external: true
+    name: kafka-compose_default

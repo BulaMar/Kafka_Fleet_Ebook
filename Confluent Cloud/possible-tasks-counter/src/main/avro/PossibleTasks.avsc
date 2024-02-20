@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "namespace": "pl.jlabs.ebook.truck",
+  "name": "PossibleTasks",
+  "doc": "Possible logistic tasks within aggregated time window.",
+  "fields": [
+    {
+      "name": "numberOfTasks",
+      "type": "int",
+      "doc": "Amount of tasks. One task equals one available truck from city."
+    },
+    {
+      "name": "city",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "doc": "City of tasks."
+    }
+  ]
+}

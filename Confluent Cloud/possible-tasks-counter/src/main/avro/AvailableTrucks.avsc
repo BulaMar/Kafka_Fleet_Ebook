@@ -1,0 +1,29 @@
+{
+  "type": "record",
+  "namespace": "pl.jlabs.ebook.truck",
+  "name": "AvailableTrucks",
+  "doc": "Number of available trucks per location.",
+  "fields": [
+    {
+      "name": "fleetSize",
+      "type": "int",
+      "doc": "Amount of trucks in the fleet."
+    },
+    {
+      "name": "city",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "doc": "City in the time of availability."
+    },
+    {
+      "name": "country",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "doc": "Country in time of availability."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "type": "record",
+  "namespace": "pl.jlabs.ebook.truck",
+  "name": "CityDetails",
+  "doc": "Details of a given city.",
+  "fields": [
+    {
+      "name": "numberOfCitizens",
+      "type": "int",
+      "doc": "Amount of citizens."
+    },
+    {
+      "name": "description",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "doc": "Description of the city from the point of view of traffic."
+    },
+    {
+      "name": "specialLaws",
+      "type": "boolean",
+      "doc": "Are there any special laws in this city."
+    }
+  ]
+}

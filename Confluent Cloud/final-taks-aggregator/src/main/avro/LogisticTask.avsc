@@ -1,0 +1,24 @@
+{
+  "type": "record",
+  "namespace": "pl.jlabs.ebook.truck",
+  "name": "LogisticTask",
+  "doc": "Simple logistic task.",
+  "fields": [
+    {
+      "name": "taskId",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "doc": "The identifier of the task."
+    },
+    {
+      "name": "city",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "doc": "City of the task."
+    }
+  ]
+}

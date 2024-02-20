@@ -1,0 +1,52 @@
+{
+  "type": "record",
+  "namespace": "pl.jlabs.ebook.truck",
+  "name": "TruckStatus",
+  "doc": "Simple status of a truck.",
+  "fields": [
+    {
+      "name": "truckId",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "doc": "The identifier of the truck."
+    },
+    {
+      "name": "mileage",
+      "type": "double",
+      "doc": "The truck mileage."
+    },
+    {
+      "name": "available",
+      "type": "boolean",
+      "doc": "Availability of the truck."
+    },
+    {
+      "name": "location",
+      "type": {
+        "type": "record",
+        "name": "BasicLocation",
+        "fields": [
+          {
+            "name": "city",
+            "type": {
+              "type": "string",
+              "avro.java.string": "String"
+            },
+            "doc": "Location city."
+          },
+          {
+            "name": "country",
+            "type": {
+              "type": "string",
+              "avro.java.string": "String"
+            },
+            "doc": "Location country."
+          }
+        ]
+      },
+      "doc": "Current location of the truck."
+    }
+  ]
+}
