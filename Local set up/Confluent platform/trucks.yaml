@@ -22,6 +22,6 @@ spec:
             - name: TRUCK_ID
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.name
+                  fieldPath: metadata.name // will be different for each pod in StatefulSet
             - name: BOOTSTRAP_SERVERS
               value: 'kafka:9071'

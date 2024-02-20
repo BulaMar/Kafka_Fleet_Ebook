@@ -37,6 +37,7 @@ class AvailableTrucksStreamAggregatorTest {
 
 	Topology topology = new AvailableTrucksStreamAggregator(properties).createTopology();
 
+	// TopologyTestDriver allows us to verify our stream topologies without running kafka instance
 	try (TopologyTestDriver testDriver = new TopologyTestDriver(topology, properties)) {
 	  SpecificAvroSerde<TruckStatus> truckStatusSerde = getSpecificAvroSerde(properties);
 	  SpecificAvroSerde<AvailableTrucks> availableTrucksSerde = getSpecificAvroSerde(properties);

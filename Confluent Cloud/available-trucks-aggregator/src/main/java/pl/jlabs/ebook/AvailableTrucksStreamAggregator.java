@@ -39,21 +39,21 @@ public class AvailableTrucksStreamAggregator {
 	Serde<AvailableTrucks> availableTrucksSerde = getSpecificAvroSerde(properties);
 
 	StreamsBuilder streamsBuilder = new StreamsBuilder();
-	KTable<Windowed<String>, AvailableTrucks> trucksStatus = streamsBuilder
-			.stream("trucks_status", Consumed.with(Serdes.String(), truckStatusSerde))
+	streamsBuilder
+			.stream("trucks_status", Consumed.with(Serdes.String(), truckStatusSerde)) // we are consuming events from trucks_status topic
 			.peek((k, v) -> log.info("Consumed truck status: {}", v))
-			.filter((k, v) -> v.getAvailable())
-			.map((s, truckStatus) -> new KeyValue<>(
+			.filter((k, v) -> v.getAvailable()) // we are filtering out those which are not available
+			.map((s, truckStatus) -> new KeyValue<>( // mapping to key value event to be able to group by key
 						 truckStatus.getLocation().getCity(),
 						 truckStatus
 				 )
 			)
-			.groupByKey(Grouped.with(Serdes.String(), truckStatusSerde))
-			.windowedBy(TimeWindows.ofSizeAndGrace(
+			.groupByKey(Grouped.with(Serdes.String(), truckStatusSerde)) // grouping by key using String Serde
+			.windowedBy(TimeWindows.ofSizeAndGrace( // create window of 10s for those group
 					Duration.ofSeconds(10),
 					Duration.ofMillis(10)
 			))
-			.aggregate(
+			.aggregate( // aggregate each events in window to new AvailableTrucks events
 					() -> new AvailableTrucks(0, "", ""),
 					(city, truckStatus, availableTrucks) -> {
 					  availableTrucks.setCity(city);
@@ -63,15 +63,14 @@ public class AvailableTrucksStreamAggregator {
 					  return availableTrucks;
 					},
 					Materialized.with(Serdes.String(), availableTrucksSerde)
-			);
-	trucksStatus.mapValues((readOnlyKey, value) -> value);
-	trucksStatus
-			.suppress(untilWindowCloses(unbounded()))
+			)
+			.mapValues((readOnlyKey, value) -> value)
+			.suppress(untilWindowCloses(unbounded())) // wait for window to close
 			.toStream()
 			.map((wk, value) -> KeyValue.pair(wk.key(), value))
 			.peek((s, availableTrucks) ->
 						  log.info("Sending a new trucks availability event: {}", availableTrucks))
-			.to("available_trucks", Produced.with(Serdes.String(), availableTrucksSerde));
+			.to("available_trucks", Produced.with(Serdes.String(), availableTrucksSerde)); // send aggregated events to new topic
 	return streamsBuilder.build();
   }
 }

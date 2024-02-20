@@ -47,6 +47,7 @@ public class PossibleLogisticTasksEvaluator {
 			.stream("aggregated_tasks", Consumed.with(Serdes.String(), logisticTaskSerde))
 			.peek((k, v) -> log.info("Consumed aggregated tasks: {}", v));
 
+	// Instruction function how to join events to common event
 	ValueJoiner<AvailableTrucks, AggregatedTasks, Integer> taskJoiner =
 			(availableTrucks, logisticTasksNumber) -> {
 			  log.info(
@@ -61,7 +62,7 @@ public class PossibleLogisticTasksEvaluator {
 	availableTrucksStream.join(
 					logisticTasksStream,
 					taskJoiner,
-					JoinWindows.ofTimeDifferenceAndGrace(
+					JoinWindows.ofTimeDifferenceAndGrace( // time window in which join will take place
 							Duration.ofMinutes(1),
 							Duration.ofSeconds(10)
 					),
@@ -72,12 +73,12 @@ public class PossibleLogisticTasksEvaluator {
 					)
 			)
 			.peek((k, v) -> log.info("Joined {} truck(s) for {}", v, k))
-			.groupByKey(Grouped.with(Serdes.String(), Serdes.Integer()))
-			.reduce(Integer::sum)
+			.groupByKey(Grouped.with(Serdes.String(), Serdes.Integer())) // grouped joined events by key
+			.reduce(Integer::sum) // sum of possible tasks
 			.mapValues((readOnlyKey, value) ->
 							   new PossibleTasks(value, readOnlyKey))
 			.toStream()
-			.to(
+			.to( // send joined and reduced events to new topic
 					"possible_tasks",
 					Produced.with(Serdes.String(), possibleTasksSerde)
 			);

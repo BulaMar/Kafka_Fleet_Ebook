@@ -40,17 +40,17 @@ public class LogisticTasksStreamAggregator {
 	streamsBuilder
 			.stream("logistic_tasks", Consumed.with(Serdes.String(), logisticTaskSerde))
 			.peek((k, v) -> log.info("Consumed logistic task record: {}", v))
-			.map((s1, logisticTask) -> new KeyValue<>(
+			.map((s1, logisticTask) -> new KeyValue<>( // mapping to key value event to be able to group by key
 						 logisticTask.getCity(),
 						 logisticTask
 				 )
 			)
-			.groupByKey(Grouped.with(Serdes.String(), logisticTaskSerde))
-			.windowedBy(TimeWindows.ofSizeAndGrace(
+			.groupByKey(Grouped.with(Serdes.String(), logisticTaskSerde)) // grouping by key using String Serde
+			.windowedBy(TimeWindows.ofSizeAndGrace( // create window of 10s for those group
 					Duration.ofSeconds(10),
 					Duration.ofMillis(10)
 			))
-			.aggregate(
+			.aggregate( // aggregate each events in window to new AggregatedTasks events
 					() -> new AggregatedTasks(0, ""),
 					(city, logisticTask, aggregatedTasks) -> {
 					  aggregatedTasks.setCity(city);
@@ -60,12 +60,12 @@ public class LogisticTasksStreamAggregator {
 					},
 					Materialized.with(Serdes.String(), aggregatedTasksSerde)
 			)
-			.suppress(untilWindowCloses(unbounded()))
+			.suppress(untilWindowCloses(unbounded())) // wait for window to close
 			.toStream()
 			.map((wk, value) -> KeyValue.pair(wk.key(), value))
 			.peek((s, aggregatedTasks) ->
 						  log.info("Sending a new aggregated logistic tasks event: {}", aggregatedTasks))
-			.to("aggregated_tasks", Produced.with(Serdes.String(), aggregatedTasksSerde));
+			.to("aggregated_tasks", Produced.with(Serdes.String(), aggregatedTasksSerde)); // send aggregated events to new topic
 	return streamsBuilder.build();
   }
 }

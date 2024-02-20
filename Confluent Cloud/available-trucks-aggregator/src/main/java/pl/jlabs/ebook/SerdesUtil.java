@@ -9,6 +9,7 @@ import java.util.Properties;
 
 public class SerdesUtil {
 
+  // Creating avro serde for specific class type
   public static <T extends SpecificRecord> SpecificAvroSerde<T> getSpecificAvroSerde(final Properties properties) {
 	Map<String, Object> config = Utils.propsToMap(properties);
 	final SpecificAvroSerde<T> specificAvroSerde = new SpecificAvroSerde<>();
