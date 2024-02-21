@@ -63,8 +63,8 @@ public class PossibleLogisticTasksEvaluator {
 					logisticTasksStream,
 					taskJoiner,
 					JoinWindows.ofTimeDifferenceAndGrace( // time window in which join will take place
-							Duration.ofMinutes(1),
-							Duration.ofSeconds(10)
+							Duration.ofSeconds(5),
+							Duration.ofSeconds(1)
 					),
 					StreamJoined.with(
 							Serdes.String(),

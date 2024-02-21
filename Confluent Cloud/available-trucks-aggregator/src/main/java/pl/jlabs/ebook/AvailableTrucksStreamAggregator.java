@@ -65,8 +65,7 @@ public class AvailableTrucksStreamAggregator {
 					},
 					Materialized.with(Serdes.String(), availableTrucksSerde)
 			)
-			.mapValues((readOnlyKey, value) -> value)
-			.suppress(untilWindowCloses(unbounded())) // wait for the window to close with an unbounded buffer, meaning it will continue to consume a memory as needed until the window closes 
+			.suppress(untilWindowCloses(unbounded())) // wait for the window to close with an unbounded buffer, meaning it will continue to consume a memory as needed until the window closes
 			.toStream()
 			.map((wk, value) -> KeyValue.pair(wk.key(), value))
 			.peek((s, availableTrucks) ->

@@ -33,9 +33,9 @@ class AvailableTrucksStreamAggregatorTest {
 
 	final Properties properties = new Properties();
 	properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "available-trucks-aggregate-test");
-	// TopologyTestDriver can use a in memory schema registry MockSchemaRegistry. 
-	// It will pick it up automatically when there will be mock:// instead of http:// in the schema.registry.url property 
-	properties.put("schema.registry.url", "mock://available-trucks-aggregation-test-schema-registry"); 
+	// TopologyTestDriver can use a in memory schema registry MockSchemaRegistry.
+	// It will pick it up automatically when there will be mock:// instead of http:// in the schema.registry.url property
+	properties.put("schema.registry.url", "mock://available-trucks-aggregation-test-schema-registry");
 
 	Topology topology = new AvailableTrucksStreamAggregator(properties).createTopology();
 
@@ -75,7 +75,6 @@ class AvailableTrucksStreamAggregatorTest {
 
 		testInputTopic.pipeInput(null, value, timestampMs);
 		timestampMs += 1000;
-		System.out.println(timestampMs);
 	  }
 
 	  // PUT ONE MORE TO KEEP FLOW OF EVENTS
