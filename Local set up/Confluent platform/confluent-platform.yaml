@@ -1,5 +1,6 @@
 apiVersion: platform.confluent.io/v1beta1
-kind: KRaftController // this will install kafka brokers as controllers, you can notice that it has the same image as Kafka.
+# this will install kafka brokers as controllers, you can notice that it has the same image as Kafka.
+kind: KRaftController
 metadata:
   name: kraftcontroller
   namespace: confluent
@@ -27,7 +28,8 @@ spec:
   replicas: 3
 ---
 apiVersion: platform.confluent.io/v1beta1
-kind: Connect // Confluent Connect Server for handling sinks and sources
+# Confluent Connect Server for handling sinks and sources
+kind: Connect
 metadata:
   name: connect
   namespace: confluent
@@ -39,7 +41,8 @@ spec:
   build:
     type: onDemand
     onDemand:
-      plugins: // Here we can add connectors, e.g. The Official Mongo one
+      # Here we can add connectors, e.g. The Official Mongo one
+      plugins:
         locationType: confluentHub
         confluentHub:
           - name: kafka-connect-mongodb
@@ -50,7 +53,8 @@ spec:
       bootstrapEndpoint: kafka:9071
 ---
 apiVersion: platform.confluent.io/v1beta1
-kind: KsqlDB // The ksqlDB instance for processing ksql queries, tables and streams
+# The ksqlDB instance for processing ksql queries, tables and streams
+kind: KsqlDB
 metadata:
   name: ksqldb
   namespace: confluent
@@ -62,7 +66,8 @@ spec:
   dataVolumeCapacity: 5Gi
 ---
 apiVersion: platform.confluent.io/v1beta1
-kind: ControlCenter // Basically, a web UI to manage all components
+# Basically, a web UI to manage all components
+kind: ControlCenter
 metadata:
   name: controlcenter
   namespace: confluent
@@ -94,7 +99,8 @@ spec:
     init: confluentinc/confluent-init-container:2.7.0
 ---
 apiVersion: platform.confluent.io/v1beta1
-kind: KafkaRestProxy // RESTful interface to cluster, producing and consuming messages
+# RESTful interface to cluster, producing and consuming messages
+kind: KafkaRestProxy
 metadata:
   name: kafkarestproxy
   namespace: confluent
@@ -108,7 +114,8 @@ spec:
       url: http://schemaregistry.confluent.svc.cluster.local:8081
 ---
 apiVersion: platform.confluent.io/v1beta1
-kind: KafkaRestClass // Admin REST Class for managing internal communication, e.g. for KafkaTopic custom resource (CR)
+# Admin REST Class for managing internal communication, e.g. for KafkaTopic custom resource (CR)
+kind: KafkaRestClass
 metadata:
   name: krc-cfk
   namespace: confluent
