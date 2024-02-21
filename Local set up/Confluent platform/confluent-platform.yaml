@@ -1,5 +1,5 @@
 apiVersion: platform.confluent.io/v1beta1
-kind: KRaftController // this will install kafka brokers as controllers, you can notice that it has same image as Kafka.
+kind: KRaftController // this will install kafka brokers as controllers, you can notice that it has the same image as Kafka.
 metadata:
   name: kraftcontroller
   namespace: confluent
@@ -27,7 +27,7 @@ spec:
   replicas: 3
 ---
 apiVersion: platform.confluent.io/v1beta1
-kind: Connect // Confluent Connect Server for handling sink and sources
+kind: Connect // Confluent Connect Server for handling sinks and sources
 metadata:
   name: connect
   namespace: confluent
@@ -39,7 +39,7 @@ spec:
   build:
     type: onDemand
     onDemand:
-      plugins: // Here we can add connectors, e.g. Official Mongo one
+      plugins: // Here we can add connectors, e.g. The Official Mongo one
         locationType: confluentHub
         confluentHub:
           - name: kafka-connect-mongodb
@@ -50,7 +50,7 @@ spec:
       bootstrapEndpoint: kafka:9071
 ---
 apiVersion: platform.confluent.io/v1beta1
-kind: KsqlDB // ksqlDB instance for processing ksql queries, tables and streams
+kind: KsqlDB // The ksqlDB instance for processing ksql queries, tables and streams
 metadata:
   name: ksqldb
   namespace: confluent
@@ -62,7 +62,7 @@ spec:
   dataVolumeCapacity: 5Gi
 ---
 apiVersion: platform.confluent.io/v1beta1
-kind: ControlCenter // Basically Web UI to manage all components
+kind: ControlCenter // Basically, a web UI to manage all components
 metadata:
   name: controlcenter
   namespace: confluent
