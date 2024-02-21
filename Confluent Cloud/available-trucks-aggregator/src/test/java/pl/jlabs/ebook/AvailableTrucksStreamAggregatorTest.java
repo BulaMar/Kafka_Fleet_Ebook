@@ -33,11 +33,13 @@ class AvailableTrucksStreamAggregatorTest {
 
 	final Properties properties = new Properties();
 	properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "available-trucks-aggregate-test");
-	properties.put("schema.registry.url", "mock://available-trucks-aggregation-test-schema-registry");
+	// TopologyTestDriver can use a in memory schema registry MockSchemaRegistry. 
+	// It will pick it up automatically when there will be mock:// instead of http:// in the schema.registry.url property 
+	properties.put("schema.registry.url", "mock://available-trucks-aggregation-test-schema-registry"); 
 
 	Topology topology = new AvailableTrucksStreamAggregator(properties).createTopology();
 
-	// TopologyTestDriver allows us to verify our stream topologies without running kafka instance
+	// The TopologyTestDriver allows us to verify our stream topologies without running a kafka instance
 	try (TopologyTestDriver testDriver = new TopologyTestDriver(topology, properties)) {
 	  SpecificAvroSerde<TruckStatus> truckStatusSerde = getSpecificAvroSerde(properties);
 	  SpecificAvroSerde<AvailableTrucks> availableTrucksSerde = getSpecificAvroSerde(properties);
