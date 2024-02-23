@@ -51,6 +51,7 @@ class LogisticTasksStreamAggregatorTest {
 
 	  long timestampMs = 0L;
 
+	  // Let's create some input events and pass them to test topic
 	  for (LogisticTask value : List.of(
 			  createLogisticTask(KRAKOW),
 			  createLogisticTask(KRAKOW),
@@ -64,7 +65,7 @@ class LogisticTasksStreamAggregatorTest {
 	  )) {
 
 		testInputTopic.pipeInput(null, value, timestampMs);
-		timestampMs += 1000;
+		timestampMs += 1000; // we are increasing timestamp to simulate gaps between events delivery
 		System.out.println(timestampMs);
 	  }
 

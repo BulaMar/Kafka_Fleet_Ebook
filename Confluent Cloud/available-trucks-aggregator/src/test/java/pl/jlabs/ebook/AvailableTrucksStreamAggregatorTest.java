@@ -60,7 +60,7 @@ class AvailableTrucksStreamAggregatorTest {
 	  BasicLocation gdansk = new BasicLocation(GDANSK, POLAND);
 	  BasicLocation warsaw = new BasicLocation(WARSAW, POLAND);
 	  BasicLocation krakow = new BasicLocation(KRAKOW, POLAND);
-
+	  // Let's create some input events and pass them to the input topic
 	  for (TruckStatus value : List.of(
 			  createTruckStatus(true, krakow),
 			  createTruckStatus(false, krakow),
@@ -74,7 +74,7 @@ class AvailableTrucksStreamAggregatorTest {
 	  )) {
 
 		testInputTopic.pipeInput(null, value, timestampMs);
-		timestampMs += 1000;
+		timestampMs += 1000; // we are increasing timestamp to simulate gaps between events delivery
 	  }
 
 	  // PUT ONE MORE TO KEEP FLOW OF EVENTS
